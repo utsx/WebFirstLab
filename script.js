@@ -8,7 +8,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "/handler.php",
+            url: "check.php",
             data: {
                 'R': $('input[name="R"]').val(),
                 'Y': $('input[name="Y"]').val(),
@@ -33,7 +33,7 @@ $(document).ready(function () {
     }
 
     function isValidY(y){
-        if (y === "") {
+        if (y === null || y === "") {
             return false;
         }
         if (y < -5 || y > 3) {
@@ -43,7 +43,7 @@ $(document).ready(function () {
     }
 
     function isValidR(r){
-        if (r === "") {
+        if (r === null || r === "") {
             return false;
         }
         if (r < 1 || r > 4) {
@@ -54,16 +54,19 @@ $(document).ready(function () {
 
     function createTableRow(json_object){
         document.querySelector(".history_table_body").innerHTML += `
-			<tr>
-				<td>${json_object.r}</td>
+			<tr class="${json_object.result ? "yes" : "no"}">
 				<td>${json_object.x}</td>
 				<td>${json_object.y}</td>
+				<td>${json_object.r}</td>
 				<td>${json_object.result ? "Да" : "Нет"}</td>
 	            <td>${json_object.date}</td>
 	            <td>${(new Number(json_object.time * 1000)).toPrecision(3) + " ms"}</td>
 			</tr>
 			`;
     }
+    $("#button_reset").on('click', function(e){
+        $('.history_table_body').html("");
+    });
 });
 
 
